@@ -1,14 +1,28 @@
 <?php
-	$serveur="localhost";
+if ($_POST) {
+  # code...
+	
+    $serveur="localhost";
     $nomBD="dataware2";
     $login="root";
-    $password="";
+    $pass="";
+    
+    $email = $_POST['email'];
+    $motdepasse = $_POST['password'];
 
-    $connexion = mysqli_connect($serveur, $login, $password, $nomBD);
+    $connexion = mysqli_connect($serveur, $login, $pass, $nomBD);
 
-    if(mysqli_connect_errno()){
-      echo "Failed to connect!";
-      exit();
+    $query= "SELECT * FROM personnel WHERE email='$email' AND motdepasse='$motdepasse'";
+  
+    $result = mysqli_query($connexion, $query);
+    if (mysqli_num_rows($result)==1) {
+      session_start();
+
+      $_SESSION['authenticated'] = true;
+      header('Location: index.php'); 
+    } else {
+      echo 'wrong email address or password';
     }
 
+  }
 ?>
