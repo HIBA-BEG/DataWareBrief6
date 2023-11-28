@@ -1,19 +1,30 @@
 <?php
-	// require 'connexion.php'; 
+  session_start();
+	require ('../connexion.php'); 
     // echo '7d hna khdam';
     // if (!$_SESSION['authenticated']) {
     //     header('Location: index.php');
     // }
     // echo ' hadchi lla';
     // require 'connexion.php';
-    // session_start();
     // print_r($_POST);
-    $serveur="localhost";
-    $nomBD="dataware2";
-    $login="root";
-    $pass="";
-    
-    $connexion = mysqli_connect($serveur, $login, $pass, $nomBD);
+
+    if (isset($_POST['submits'])) {
+      $id_projet = $_POST['projet'];
+      $id_utilisateur = $_POST['id']; 
+      $role = 'ScrumMaster';
+  
+      $updateQuery = "UPDATE utilisateur
+                      SET  role = '$role', projet = '$id_projet'
+                      WHERE id = '$id_utilisateur'";
+  
+      $updateResult = mysqli_query($conn, $updateQuery);
+  
+      if ($updateResult) {
+          header('Location: ./indexP.php');
+      }
+  }
+
 ?>
 
 <!doctype html>
@@ -27,8 +38,8 @@
 
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="./index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <img src="./assets/dataware-white.png" class="h-8" alt="dataware Logo" />
+    <a href="./indexP.php" class="flex items-center space-x-3 rtl:space-x-reverse">
+      <img src="../assets/dataware-white.png" class="h-8" alt="dataware Logo" />
     </a>
     <a href="#" class="py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-lime-500 md:p-0 dark:text-white md:dark:hover:text-lime-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" >Deconnexion</a>
   <div class="items-center justify-between w-full md:flex md:w-auto md:order-1" id="navbar-user">
@@ -53,20 +64,24 @@
 </div>
   </div>
 </nav>
-<!-- This example requires Tailwind CSS v2.0+ -->
-<section class="dark:bg-gray-900 bg-gray-50 p-3 sm:p-5">
-    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+<section class="dark:bg-gray-900 bg-gray-50 mx-auto py-12 px-4 max-w-7xl sm:px-6 lg:px-8 lg:py-24 ">
+    <div class="space-y-12 sm:space-y-4 md:max-w-xl lg:max-w-3xl xl:max-w-none">
+      <h2 class="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">Liste des Projets de DATAWARE</h2>
+    </div>
+    <div class="mx-auto max-w-screen-xl p-4 lg:px-12">
         <!-- Start coding here -->
         <div class=" dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-            <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                    <button type="button" class="flex items-center justify-center text-white bg-lime-500 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 p-4">
+                <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-4 flex-shrink-0">
+                  <a href="ajouterProjet.php">
+                    <button type="button"  class="flex items-center justify-center text-white bg-lime-500 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                         <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                         </svg>
                         Add product
                     </button>
-                </div>
+                  </a>
+                </div> 
             </div>  
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -78,7 +93,7 @@
                             <th scope="col" class="px-4 py-3">Date de création</th>
                             <th scope="col" class="px-4 py-3">Date de fin</th>
                             <th scope="col" class="px-4 py-3">Statuts</th>
-                            <th scope="col" class="px-4 py-3">Date d'ajout</th>
+                            <th scope="col" class="px-4 py-3">Identifiant de Product Owner</th>
                             <th scope="col" class="px-4 py-3">Identifiant d'equipe</th>
                             <th scope="col" class="px-4 py-3">
                                 <span class="sr-only">Actions</span>
@@ -129,6 +144,66 @@
         </div>
     </div>
 </section>
+<section class="bg-gray-50 dark:bg-gray-900">
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
+            <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">                                                                                                                                                                                     
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                        Assigner un Scrum Master 
+                    </h1>
+                    <form class="max-w-md mx-auto" method="post">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="text" value="<?php echo $row['nom_perso']; ?>" name="nom_perso" id="nom_perso" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none " placeholder="First name" required />
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="text" value="<?php echo $row['prenom_perso']; ?>" name="last_name" id="last_name" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Last name" required />
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="email" value="<?php echo $row['email']; ?>" name="email" id="email" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Email address" required />
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="password" value="<?php echo $row['motdepasse']; ?>" name="password" id="password" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Password" required />
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="tel"  value="<?php echo $row['numero']; ?>" name="phone" id="phone" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Phone number (123-456-7890)" required />
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <select type="text" value="<?php echo $row['role']; ?>" name="role" id="role" class="py-2.5 px-0 w-full text-sm text-gray-900 rounded-md border-gray-300 dark:text-gray-900 dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none ">
+                            <?php
+                                $sql = "SELECT * FROM personnel";
+                                $result1 = mysqli_query($connexion, $sql);
+
+                                // Check if the query was successful
+                                if ($result1) {
+                                    while ($row = mysqli_fetch_assoc($result1)) {
+                                        ?>
+                                            <option>
+                                            <?php echo $row['role'] ; ?>
+                                            </option>
+                                        <?php
+                                    }
+                                    // Free result set
+                                    mysqli_free_result($result1);
+                                } else {
+                                    // Handle the error, e.g., display an error message or log the error
+                                    echo "Error: " . mysqli_error($connexion);
+                                }
+                                ?>
+                    </select>
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input type="date" name="date_dajout" id="date_dajout" value ="<?php echo date('Y-m-d') ?>" class="py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none " />
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            
+
+                        </div>
+                        <button type="submit" name="save-btn" value="save" class="text-white bg-lime-500 hover:bg-lime-800 focus:ring-4 focus:outline-none focus:ring-lime-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-lime-600 dark:hover:bg-lime-700 dark:focus:ring-lime-800">Submit</button>
+                    </form>
+                </div>  
+            </div>
+        </div>
+    </section>
 
 </body>
 </html>

@@ -1,7 +1,23 @@
 <?php
     session_start();
 	require 'connexion.php';
-    
+
+if ($_POST) {
+    $email = $_POST['email'];
+    $motdepasse = $_POST['password'];
+
+    $query= "SELECT * FROM personnel WHERE email='$email' AND motdepasse='$motdepasse'";
+  
+    $result = mysqli_query($connexion, $query);
+    if (mysqli_num_rows($result)==1) {
+
+      $_SESSION['authenticated'] = true;
+      header('Location: ./Admin/index.php'); 
+    } else {
+      echo 'wrong email address or password';
+    }
+
+  }
 
 ?>
 <!doctype html>

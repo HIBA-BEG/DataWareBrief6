@@ -1,13 +1,6 @@
 <?php
     session_start();	
-	// require 'connexion.php'; 
-
-    $serveur="localhost";
-    $nomBD="dataware2";
-    $login="root";
-    $pass="";
-    
-    $connexion = mysqli_connect($serveur, $login, $pass, $nomBD);
+	require '../connexion.php'; 
 
     $ID= $_GET['modifierID'];
 
@@ -19,29 +12,32 @@
         $email = $_POST['email'];
         $motdepasse = $_POST['password'];
         $phone = $_POST['phone'];
+        $role = $_POST['role'];
         $date_dajout = $_POST['date_dajout'];
+        // $nomEquipe = $_POST['ID_equipe'];
 
-        $select = "SELECT * FROM personnel WHERE ID_perso = '$ID'";
-        $result = mysqli_query($connexion, $select);
-        $row = mysqli_fetch_array($result);
-
+        
         // Assuming $connexion is your database connection object
         $sql = "UPDATE personnel SET nom_perso='$nom', prenom_perso='$prenom', email='$email', motdepasse='$motdepasse', numero= '$phone' , role='$role', date_dajout='$date_dajout' WHERE ID_perso = '$ID'";
-
-        $result1 = mysqli_query($connexion,$sql);
+        
+        $result = mysqli_query($connexion,$sql);
         if ($result) {
-        header("Location: ./index.php");
-        exit();
+            header("Location: ./index.php");
+            exit();
         }else{
             die(mysql_error($connexion));
         }
+    }
         
-
+        
         // Close the result set
+        $select = "SELECT * FROM personnel WHERE ID_perso = '$ID'";
+        $result = mysqli_query($connexion, $select);
+        $row = mysqli_fetch_array($result);
         // mysqli_free_result($result);
         
-    }
 ?>
+
 <!doctype html>
 <html>
 <head>
@@ -77,7 +73,7 @@
                             <input type="tel"  value="<?php echo $row['numero']; ?>" name="phone" id="phone" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Phone number (123-456-7890)" required />
                         </div>
                         <div class="relative z-0 w-full mb-5 group">
-                            <select type="text" value="<?php echo $row['role']; ?>" name="role" id="role" class=" w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                            <select type="text" value="<?php echo $row['role']; ?>" name="role" id="role" class="py-2.5 px-0 w-full text-sm text-gray-900 rounded-md border-gray-300 dark:text-gray-900 dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none ">
                             <?php
                                 $sql = "SELECT * FROM personnel";
                                 $result1 = mysqli_query($connexion, $sql);
@@ -101,7 +97,11 @@
                     </select>
                         </div>
                         <div class="relative z-0 w-full mb-5 group">
-                            <input type="date" name="date_dajout" id="date_dajout" value ="<?php echo date('Y-m-d') ?>" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none " />
+                            <input type="date" name="date_dajout" id="date_dajout" value ="<?php echo date('Y-m-d') ?>" class="py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none " />
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            
+
                         </div>
                         <button type="submit" name="save-btn" value="save" class="text-white bg-lime-500 hover:bg-lime-800 focus:ring-4 focus:outline-none focus:ring-lime-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-lime-600 dark:hover:bg-lime-700 dark:focus:ring-lime-800">Submit</button>
                     </form>
