@@ -2,13 +2,6 @@
     session_start();	
 	require ('../connexion.php'); 
 
-    // $serveur="localhost";
-    // $nomBD="dataware2";
-    // $login="root";
-    // $pass="";
-    
-    // $connexion = mysqli_connect($serveur, $login, $pass, $nomBD);
-
     $ID= $_GET['modifierID'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
