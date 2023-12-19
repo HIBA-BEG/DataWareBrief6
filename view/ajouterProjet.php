@@ -1,40 +1,19 @@
 <?php
-    session_start();	
-	require '../connexion.php'; 
+    include "../model/personnel.php";
+    include "../controller/projet.php";
     
-
-    if (isset($_POST['save-btn'])) {
-        $nomProj = $_POST['nom_projet'];
-        $description = $_POST['description'];
-        $date_creation = $_POST['date_creation'];
-        $date_fin = $_POST['date_fin'];
-        $status = $_POST['status'];
-        
-        // Assuming $connexion is your database connection object
-        $sql = "INSERT INTO projets (nom_projet, description, date_creation, date_fin, status) VALUES (?, ?, ?, ?, ?)";
-        
-        
-        // Use prepared statement to prevent SQL injection
-        $stmt = mysqli_prepare($connexion, $sql);
-
-        // Bind parameters
-        mysqli_stmt_bind_param($stmt, "sssss", $nomProj, $description, $date_creation, $date_fin, $status);
-
-      
-        // Execute the statement
-        $result = mysqli_stmt_execute($stmt);
-
-        if ($result) {
-            header("Location: ./indexP.php");
-            exit();
-        } else {
-            // Display the error message
-            echo "Error: " . mysqli_error($connexion);
-        }
-
-        // Close the statement
-        mysqli_stmt_close($stmt);
+    session_start();
+    if($_SESSION['user_role']!= 'ProductOwner'){
+      header("Location: login.php");
     }
+    
+    $personnel = new Personnel();
+    $data = $person-> getAllPersons();
+    
+    $projet = new Projet();
+    $dataP = $project-> getAllProjects();
+  
+   
 ?>
 <!doctype html>
 <html>
@@ -53,9 +32,6 @@
                 <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                     <li>
                         <a href="./indexP.php" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-lime-500 md:p-0 dark:text-white md:dark:hover:text-lime-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Accueil</a>
-                    </li>
-                    <li>
-                        <a href="./assignerSM.php" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-lime-500 md:p-0 dark:text-white md:dark:hover:text-lime-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Assigner</a>
                     </li>
                     <li>
                         <a href="./profileProductOwner.php" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-lime-500 md:p-0 dark:text-white md:dark:hover:text-lime-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
@@ -94,7 +70,7 @@
                             <input type="text" name="status" id="status" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Statut" required />
                         </div>
                         
-                        <button type="submit" name="save-btn" value="save" class="text-white bg-lime-500 hover:bg-lime-800 focus:ring-4 focus:outline-none focus:ring-lime-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-lime-600 dark:hover:bg-lime-700 dark:focus:ring-lime-800">AJOUTER</button>
+                        <button type="submit" name="addProjet" value="save" class="text-white bg-lime-500 hover:bg-lime-800 focus:ring-4 focus:outline-none focus:ring-lime-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-lime-600 dark:hover:bg-lime-700 dark:focus:ring-lime-800">AJOUTER</button>
                     </form>
                 </div>  
             </div>

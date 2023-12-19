@@ -9,18 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ID_equipe = $_POST['ID_equ'];
 
     // Assuming $connexion is your database connection object
-    $sql = "UPDATE personnel SET role='$role' WHERE ID_perso = '$ID'";
+    $sql = "UPDATE projets SET role='$role' WHERE ID_projet = '$ID'";
 
     $result = mysqli_query($connexion, $sql);
     if ($result) {
-        header("Location: ./indexP.php");
+        header("Location: ./index.php");
         exit();
     } else {
         die(mysqli_error($connexion));
     }
 }
 
-$select = "SELECT * FROM personnel WHERE ID_perso = '$ID'";
+$select = "SELECT * FROM projets WHERE ID_projet = '$ID'";
 $result = mysqli_query($connexion, $select);
 $row = mysqli_fetch_array($result);
 
@@ -68,7 +68,7 @@ $row = mysqli_fetch_array($result);
                     </h1>
                     <form class="max-w-md mx-auto" method="post">
                         <div class="relative z-0 w-full mb-5 group">
-                            <input type="text" value="<?php echo $row['nom_perso']; ?>" name="nomProj" id="nomProj" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none " placeholder="First name" required />
+                            <input type="text" value="<?php echo $row['nom_projet']; ?>" name="nomProj" id="nomProj" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none " placeholder="First name" required />
                         </div>
                         <div class="relative z-0 w-full mb-5 group">
                             <input type="text" value="<?php echo $row['description']; ?>" name="description" id="description" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Last name" required />

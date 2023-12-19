@@ -1,41 +1,4 @@
-<?php
-    session_start();	
-	require 'connexion.php'; 
 
-    if (isset($_POST['save-btn'])) {
-        $prenom = $_POST['first_name'];
-        $nom = $_POST['last_name'];
-        $email = $_POST['email'];
-        $motdepasse = $_POST['password'];
-        $phone = $_POST['phone'];
-        $date_dajout = $_POST['date_dajout'];
-
-        // Assuming $connexion is your database connection object
-        $sql = "INSERT INTO personnel (nom_perso, prenom_perso, email, motdepasse, numero, role, date_dajout) VALUES (?, ?, ?,?, ?, ?, ?)";
-        
-        
-        // Use prepared statement to prevent SQL injection
-        $stmt = mysqli_prepare($connexion, $sql);
-
-        // Bind parameters
-        mysqli_stmt_bind_param($stmt, "ssssiss", $nom, $prenom, $email, $motdepasse, $phone, $role, $date_dajout);
-
-      
-        // Execute the statement
-        $result = mysqli_stmt_execute($stmt);
-
-        if ($result) {
-            header("Location: ./authentification.php");
-            exit();
-        } else {
-            // Display the error message
-            echo "Error: " . mysqli_error($connexion);
-        }
-
-        // Close the statement
-        mysqli_stmt_close($stmt);
-    }
-?>
 <!doctype html>
 <html>
 <head>

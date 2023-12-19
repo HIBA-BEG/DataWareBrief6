@@ -16,7 +16,7 @@
             header("Location: ./indexP.php");
             exit();
         }else{
-            die(mysql_error($connexion));
+            die(mysqli_error($connexion));
         }
     }
 

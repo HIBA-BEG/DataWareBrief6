@@ -1,15 +1,16 @@
 <?php 
-    include 'connexion.php';
+    require '../connexion.php'; 
+
     if (isset($_GET['supprimerID'])){
         $id=$_GET['supprimerID'];
 
-        $sql = "DELETE FROM `membre` WHERE `ID_membre` = '$id'";
+        $sql = "DELETE FROM `projets` WHERE `ID_projet` = '$id'";
         $result = mysqli_query($connexion,$sql);
         if ($result) {
-            header("Location: ./index.php");
+            header("Location: ./indexP.php");
             exit();
         }else{
-            die(mysql_error($connexion));
+            die(mysqli_error($connexion));
         }
     }
 

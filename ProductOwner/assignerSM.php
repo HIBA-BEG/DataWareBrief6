@@ -1,12 +1,13 @@
 <?php
 require('../connexion.php');
 
-if (isset($_POST['save-btn'])) {
+if (isset($_POST['submit'])) {
     $role = 'Scrum master';
 
     $updateQuery = "UPDATE personnel
                     SET  role = '$role' WHERE ID_perso = '$id'";
 
+    echo('scrum master');
     $updateResult = mysqli_query($connexion, $updateQuery);
 
     if ($updateResult) {

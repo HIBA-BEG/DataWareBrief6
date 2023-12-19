@@ -6,26 +6,20 @@
 
     $row = array();
     
-    if (isset($_POST['nom_perso'])) {
-        $nom = $_POST['nom_perso'];
-        $prenom = $_POST['last_name'];
-        $email = $_POST['email'];
-        $motdepasse = $_POST['password'];
-        $phone = $_POST['phone'];
+    if (isset($_POST['prenom_perso'])) {
+        $prenom = $_POST['prenom'];
         $role = $_POST['role'];
-        $date_dajout = $_POST['date_dajout'];
         // $nomEquipe = $_POST['ID_equipe'];
 
-        
         // Assuming $connexion is your database connection object
-        $sql = "UPDATE personnel SET nom_perso='$nom', prenom_perso='$prenom', email='$email', motdepasse='$motdepasse', numero= '$phone' , role='$role', date_dajout='$date_dajout' WHERE ID_perso = '$ID'";
+        $sql = "UPDATE personnel SET  role='$role' WHERE ID_perso = '$ID'";
         
         $result = mysqli_query($connexion,$sql);
         if ($result) {
-            header("Location: ./index.php");
+            header("Location: ./indexP.php");
             exit();
         }else{
-            die(mysql_error($connexion));
+            die(mysqli_error($connexion));
         }
     }
         
@@ -56,9 +50,6 @@
                     <a href="./index.php" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-lime-500 md:p-0 dark:text-white md:dark:hover:text-lime-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Accueil</a>
                 </li>
                 <li>
-                    <a href="./assignerPO.php" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-lime-500 md:p-0 dark:text-white md:dark:hover:text-lime-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Assigner</a>
-                </li>
-                <li>
                     <a href="./profileAdmin.php" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-lime-500 md:p-0 dark:text-white md:dark:hover:text-lime-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
                 </li>
                 <li>
@@ -80,19 +71,7 @@
                     </h1>
                     <form class="max-w-md mx-auto" method="post">
                         <div class="relative z-0 w-full mb-5 group">
-                            <input type="text" value="<?php echo $row['nom_perso']; ?>" name="nom_perso" id="nom_perso" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none " placeholder="First name" required />
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="text" value="<?php echo $row['prenom_perso']; ?>" name="last_name" id="last_name" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Last name" required />
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="email" value="<?php echo $row['email']; ?>" name="email" id="email" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Email address" required />
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="password" value="<?php echo $row['motdepasse']; ?>" name="password" id="password" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Password" required />
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="tel"  value="<?php echo $row['numero']; ?>" name="phone" id="phone" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Phone number (123-456-7890)" required />
+                            <input type="text" value="<?php echo $row['prenom_perso']; ?>" name="prenom" id="prenom" class=" py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none" placeholder="Last name" required />
                         </div>
                         <div class="relative z-0 w-full mb-5 group">
                             <select type="text" value="<?php echo $row['role']; ?>" name="role" id="role" class="py-2.5 px-0 w-full text-sm text-gray-900 rounded-md border-gray-300 dark:text-gray-900 dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none ">
@@ -117,10 +96,7 @@
                                 }
                                 ?>
                     </select>
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="date" name="date_dajout" id="date_dajout" value ="<?php echo date('Y-m-d') ?>" class="py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-lime-500 focus:outline-none " />
-                        </div>
+                            </div>
                         <div class="relative z-0 w-full mb-5 group">
                             
 
