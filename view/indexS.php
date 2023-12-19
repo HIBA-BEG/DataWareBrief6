@@ -1,6 +1,12 @@
 <?php
+include "../model/personnel.php";
+include "../model/projet.php";
+
 session_start();
-require('../connexion.php');
+if($_SESSION['user_role']!= 'ScrumMaster'){
+    header("Location: indexS.php");
+  }
+
 ?>
 
 <!doctype html>

@@ -38,7 +38,7 @@ class Personnel
         $_SESSION['user_name'] = $row['nom_perso'];
         $_SESSION['user_role'] = $row['role'];
 
-        echo "Login successful. Welcome, {$_SESSION['user_name']}!";
+        // echo "Login successful. Welcome, {$_SESSION['user_name']}!";
 
         switch ($_SESSION['user_role']) {
           case "admin":
@@ -115,13 +115,89 @@ class Personnel
       return false;
     }
   }
-  
+
+  public function getOnePersonnel($ID)
+  {
+    $connexion = $this->db->connect();
+    $stmt = $connexion->query("SELECT * FROM personnel WHERE ID_perso = '".$ID."'");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function getAllPersonnel()
   {
     $connexion = $this->db->connect();
     $stmt = $connexion->query("SELECT * FROM personnel");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
+
+  // public function deletePersonnel($id)
+  // {
+  //   $connexion = $this->db->connect();
+  //   $stmt = $connexion->query("DELETE FROM `personnel` WHERE `ID_perso` = :id ");
+  //   $stmt->bindParam(":id", $id);
+  //   $stmt->execute();
+
+  // }
+
+  public function deletePersonnel($id)
+  {
+    try {
+      $connexion = $this->db->connect();
+
+      // Use prepared statement to prevent SQL injection
+      $stmt = $connexion->prepare("DELETE FROM `personnel` WHERE `ID_perso` = :id ");
+      $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+
+      // Execute the statement
+      $stmt->execute();
+
+      // Check if any row was affected (deletion successful)
+      if ($stmt->rowCount() > 0) {
+        return true;  // Deletion successful
+      } else {
+        return false; // No rows affected, maybe the ID doesn't exist
+      }
+    } catch (PDOException $e) {
+      // Handle any database errors here
+      // You might want to log the error or display a user-friendly message
+      echo "Error: " . $e->getMessage();
+      return false; // Deletion failed
+    }
+  }
+
+  public function updatePersonnelRole($nom, $prenom, $email, $motdepasse, $phone , $role, $date_dajout, $ID)
+  {
+    try {
+      $connexion = $this->db->connect();
+
+      // Use prepared statement to prevent SQL injection
+      $stmt = $connexion->prepare("UPDATE personnel SET nom_perso= :nom, prenom_perso= :prenom, email= :email, motdepasse= :motdepasse , numero= :phone , role= :role, date_dajout= :date_dajout WHERE ID_perso = :ID ");
+      $stmt->bindParam(":nom", $nom, PDO::PARAM_STR);
+      $stmt->bindParam(":prenom", $prenom, PDO::PARAM_STR);
+      $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+      $stmt->bindParam(":motdepasse", $motdepasse, PDO::PARAM_STR);
+      $stmt->bindParam(":phone", $phone, PDO::PARAM_INT);
+      $stmt->bindParam(":role", $role, PDO::PARAM_STR);
+      $stmt->bindParam(":date_dajout", $date_dajout, PDO::PARAM_STR);
+      $stmt->bindParam(":ID", $ID, PDO::PARAM_INT);
+      // Execute the statement
+      $stmt->execute();
+
+      // Check if any row was affected (update successful)
+      if ($stmt->rowCount() > 0) {
+        return true;  // Update successful
+      } else {
+        return false; // No rows affected, maybe the ID doesn't exist
+      }
+    } catch (PDOException $e) {
+      // Handle any database errors here
+      // You might want to log the error or display a user-friendly message
+      echo "Error: " . $e->getMessage();
+      return false; // Update failed
+    }
+  }
+
+
 
   // public function addPerson($name, $email, $phone, $role)
   // {

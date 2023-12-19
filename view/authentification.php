@@ -3,7 +3,8 @@ session_start();
 include '../model/personnel.php';  
 
 $error = '';
-
+$email;
+$motdepasse;
 if (isset($_POST)) {
     $email = $_POST['email'];
     $motdepasse = $_POST['password'];
